@@ -44,13 +44,13 @@ jobs:
       run: |
         mkdir /opt/rom && cd /opt/rom
         tar -zxf /opt/rom.tar.gz
-        mkdir /opt/aarch64-linux-android-4.9 && cd /opt/aarch64-linux-android-4.9
+        mkdir /opt/aarch64-linux-android && cd /opt/aarch64-linux-android
         tar -zxf /opt/aarch64-linux-android.tar.gz
+        tree /opt/aarch64-linux-android
     - name: SET ENV config
       run: |
-        export PATH=$PATH:/opt/aarch64-linux-android-4.9/bin
-        export CROSS_COMPILE=/opt/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-        
+        export PATH=$PATH:/opt/aarch64-linux-android/bin
+        export CROSS_COMPILE=/opt/aarch64-linux-android/bin/aarch64-linux-android-
     - name: Start build
       run: |
         cd /opt/rom/Code_Opensource/kernel
