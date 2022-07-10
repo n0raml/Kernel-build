@@ -39,16 +39,16 @@ jobs:
       run: |
         cd /opt/
         wget -q -O rom.tar.gz "https://download-c1.huawei.com/download/downloadCenter?downloadId=101135&version=439315&siteCode=worldwide"
-        wget -q -O aarch64-linux-android-4.9-d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz"
+        wget -q -O aarch64-linux-android.tar.gz "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz"
     - name: Unzip
       run: |
         mkdir /opt/rom && cd /opt/rom
         tar -zxf /opt/rom.tar.gz
         mkdir /opt/aarch64-linux-android-4.9 && cd /opt/aarch64-linux-android-4.9
-        tar -zxf /opt/aarch64-linux-android-4.9-d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz
+        tar -zxf /opt/aarch64-linux-android.tar.gz
     - name: SET ENV config
       run: |
-        export PATH=$PATH:/opt/aarch64-linux-android-4.9/aarch64-linux-android/bin
+        export PATH=$PATH:/opt/aarch64-linux-android-4.9/bin
         export CROSS_COMPILE=/opt/aarch64-linux-android-4.9/bin/aarch64-linux-android-
         
     - name: Start build
