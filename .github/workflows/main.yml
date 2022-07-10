@@ -38,8 +38,8 @@ jobs:
         KERNEL: merge_kirin710_defconfig
       run: |
         cd /opt/
-        wget -# -O rom.tar.gz "https://download-c1.huawei.com/download/downloadCenter?downloadId=101135&version=439315&siteCode=worldwide"
-        wget -# -O aarch64-linux-android-4.9-d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz"
+        wget -q -O rom.tar.gz "https://download-c1.huawei.com/download/downloadCenter?downloadId=101135&version=439315&siteCode=worldwide"
+        wget -q -O aarch64-linux-android-4.9-d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz"
     - name: Unzip
       run: |
         mkdir /opt/rom && cd /opt/rom
