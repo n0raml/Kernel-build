@@ -53,7 +53,7 @@ jobs:
         
     - name: Start build
       run: |
-        cd /opt/rom/kernel
+        cd /opt/rom/Code_Opensource/kernel
         mkdir ../out
         make ARCH=arm64 O=../out merge_kirin710_defconfig
         make ARCH=arm64 O=../out -j8
@@ -62,4 +62,4 @@ jobs:
       if: always()
       with:
         name: Padavan-packages
-        path: /opt/rom/kernel/out/arch/arm64/boot
+        path: /opt/rom/Code_Opensource/kernel/out/arch/arm64/boot
