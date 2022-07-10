@@ -1,0 +1,66 @@
+# This is a basic workflow to help you get started with Actions
+name: Build Kernel
+
+# Controls when the workflow will run
+on: 
+  release:
+    types: [published]
+  push:
+    tags:
+    - 'v*'
+  #  branches: 
+  #    - master
+#  schedule:
+#    - cron: 0 8 * * 5
+  watch:
+    types: [started]
+    
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo apt-get update
+        sudo apt install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev \
+            gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev \
+            x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev \
+            libxml2-utils xsltproc unzip bc
+    - name: Clone source code
+      env:
+        KERNEL: merge_kirin710_defconfig
+      run: |
+        cd /opt/
+        wget -O rom.tar.gz "https://download-c1.huawei.com/download/downloadCenter?downloadId=101135&version=439315&siteCode=worldwide"
+        wget -O aarch64-linux-android-4.9-d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz"
+    - name: Unzip
+      run: |
+        mkdir /opt/rom && cd /opt/rom
+        tar -zxvf /opt/rom.tar.gz
+        mkdir /opt/aarch64-linux-android-4.9 && /opt/aarch64-linux-android-4.9
+        cd /opt/aarch64-linux-android-4.9
+        tar -zxvf /opt/aarch64-linux-android-4.9-d1da3473b004989cd0bc389d61a26d104ff5e22a.tar.gz
+    - name: SET ENV config
+      run: |
+        export PATH=$PATH:/opt/aarch64-linux-android-4.9/aarch64-linux-android/bin
+        export CROSS_COMPILE=/opt/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+        
+    - name: Start build
+      run: |
+        cd /opt/rom/kernel
+        mkdir ../out
+        make ARCH=arm64 O=../out merge_kirin710_defconfig
+        make ARCH=arm64 O=../out -j8
+    - name : Upload packages
+      uses: actions/upload-artifact@master
+      if: always()
+      with:
+        name: Padavan-packages
+        path: /opt/rom/kernel/out/arch/arm64/boot
